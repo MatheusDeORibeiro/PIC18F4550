@@ -1,0 +1,65 @@
+#include <xc.h> // include processor files - each processor file is guarded.
+#include "adc.h"
+
+void habilita_ADC(void){
+    
+    ADCON0bits.ADON = 1;
+    
+}
+
+void configuracao_ADC(unsigned char Vref_n,
+                      unsigned char Vref_p, 
+                      unsigned char configuracao_pinos_AN,          
+                      unsigned char justificacao, 
+                      unsigned char tempo_aquisicao, 
+                      unsigned char clock_conversao,
+                      unsigned char interrupcao_ADC){
+    
+    ADCON1bits.VCFG1 = Vref_n; //Configuração da tensão de referência negativa
+    ADCON1bits.VCFG0 = Vref_p; //Configuração da tensão de referência positiva
+    ADCON1bits.PCFG = configuracao_pinos_AN; //Configuração dos pinos do canal AN
+    ADCON2bits.ADFM = justificacao; //Configuração da justificação
+    ADCON2bits.ACQT = tempo_aquisicao; //Configuração do tempo de aquisição
+    ADCON2bits.ADCS = clock_conversao; //Configuração do clock de conversão
+    PIE1bits.ADIE = interrupcao_ADC; //Configuração da interrupção do conversor A/D
+            
+}
+
+void seleciona_ADC(unsigned char canal){   
+        
+    ADCON0bits.CHS = canal;
+    
+}
+
+unsigned int conversao_ADC(void){    
+    
+    //_delay(); //3 - Tempo de aquisição para carga do capacitor Chold(Tempo de aquisição manual)
+    //4 - Inicia uma conversão:
+    ADCON0bits.GO = 1; //4.1 - setar o bit GO/~DONE
+    //5 - Aguardar pela conversão A/D:
+    while(ADCON0bits.DONE);
+    
+    return (unsigned int)((ADRESH << 8) + ADRESL); //6 - Retornar o valor dos registradores ADRESH:ADRESL
+            
+}
+
+unsigned int conversao_rapida_ADC(void){
+    
+    habilita_ADC(); //1. 6 - Habilita o módulo AD (ADCON0bits.ADON = 1)
+
+    return conversao_ADC(); //4 - Inicia um conversão
+            
+}
+
+unsigned char status_conversao_ADC(void){
+    
+    return ADCON0bits.GO;
+    
+}
+
+void desabilita_ADC(void){
+    
+    ADCON0bits.ADON = 0;
+    PIE1bits.ADIE = 0;
+    
+}

@@ -1,0 +1,181 @@
+/* Microchip Technology Inc. and its subsidiaries.  You may use this software 
+ * and any derivatives exclusively with Microchip products. 
+ * 
+ * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".  NO WARRANTIES, WHETHER 
+ * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
+ * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A 
+ * PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION 
+ * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION. 
+ *
+ * IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
+ * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
+ * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
+ * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE 
+ * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS 
+ * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF 
+ * ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ *
+ * MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE 
+ * TERMS. 
+ */
+
+/* 
+ * File: adc.h  
+ * Author: Matheus
+ * Comments:
+ * Revision history: 
+ */
+
+// This is a guard condition so that contents of this file are not included
+// more than once.  
+#ifndef ADC_H
+#define	ADC_H
+
+#include <xc.h> // include processor files - each processor file is guarded.  
+
+//Declaração de definições
+#define tensao_AN2 0b1 //utiliza a tensão do canal AN2 como tensão de referência negativa
+#define tensao_Vss 0b0 //utiliza a tensão negativo da fonte como tensão de referência negativa
+#define tensao_AN3 0b1 //utiliza a tensão do canal AN3 como tensão de referência positiva
+#define tensao_Vdd 0b0 //utiliza a tensão positiva da fonte como tensão de referência positiva
+//#define ADC_13AN 0b0000 //todo o canal analógico é configurado como entrada
+//#define ADC_13AN 0b0001 //todo o canal analógico é configurado como entrada
+#define ADC_13AN 0b0010 //todo o canal analógico é configurado como entrada
+#define ADC_12AN 0b0011 //de AN0 até AN11 é configurado como entrada analógica
+#define ADC_11AN 0b0100 //de AN0 até AN10 é configurado como entrada analógica
+#define ADC_10AN 0b0101 //AN0 até AN09 é configurado como entrada analógica
+#define ADC_9AN 0b0110 //de AN0 até AN08 é configurado como entrada analógica
+#define ADC_8AN 0b0111 //de AN0 até AN07 é configurado como entrada analógica
+#define ADC_7AN 0b1000 //de AN0 até AN06 é configurado como entrada analógica
+#define ADC_6AN 0b1001 //de AN0 até AN05 é configurado como entrada analógica
+#define ADC_5AN 0b1010 //de AN0 até AN04 é configurado como entrada analógica
+#define ADC_4AN 0b1011 //de AN0 até AN03 é configurado como entrada analógica
+#define ADC_3AN 0b1100 //de AN0 até AN02 é configurado como entrada analógica
+#define ADC_2AN 0b1101 //de AN0 até AN01 é configurado como entrada analógica
+#define ADC_1AN 0b1110 //AN0 é configurado como entrada analógica
+#define ADC_0AN 0b1111 //todo o canal analógico é configurado como I/O digital
+#define ADC_CH0 0b0000 //Seleciona o canal analógico 0
+#define ADC_CH1 0b0001 //Seleciona o canal analógico 1
+#define ADC_CH2 0b0010 //Seleciona o canal analógico 2
+#define ADC_CH3 0b0011 //Seleciona o canal analógico 3
+#define ADC_CH4 0b0100 //Seleciona o canal analógico 4
+#define ADC_CH5 0b0101 //Seleciona o canal analógico 5
+#define ADC_CH6 0b0110 //Seleciona o canal analógico 6
+#define ADC_CH7 0b0111 //Seleciona o canal analógico 7
+#define ADC_CH8 0b1000 //Seleciona o canal analógico 8
+#define ADC_CH9 0b1001 //Seleciona o canal analógico 9
+#define ADC_CH10 0b1010 //Seleciona o canal analógico 10
+#define ADC_CH11 0b1011 //Seleciona o canal analógico 11
+#define ADC_CH12 0b1100 //Seleciona o canal analógico 12
+#define ADC_RIGTH_JUST 0b1 //resultado justificado a direita
+#define ADC_LEFT_JUST 0b0 //resultado justificado a esquerda
+#define ADC_20_Tad 0b111 //tempo de aquisição de 20 * Tad 
+#define ADC_16_Tad 0b110 //tempo de aquisição de 16 * Tad
+#define ADC_12_Tad 0b101 //tempo de aquisição de 12 * Tad
+#define ADC_8_Tad 0b100 //tempo de aquisição de 8 * Tad
+#define ADC_6_Tad 0b011 //tempo de aquisição de 6 * Tad
+#define ADC_4_Tad 0b010 //tempo de aquisição de 4 * Tad
+#define ADC_2_Tad 0b001 //tempo de aquisição de 2 * Tad
+#define ADC_0_Tad 0b000 //tempo de aquisição manual, para FRC, osciador interno
+//#define ADC_FOSC_FRC 0b111 //clock derivado do oscilador RC, para até 1,00MHz
+#define ADC_FOSC_64 0b110 //clock para FOSC até 48,00MHz
+#define ADC_FOSC_16 0b101 //clock para FOSC até 20,00MHz
+#define ADC_FOSC_4 0b100 //clock para FOSC até 5,00MHz
+#define ADC_FOSC_FRC 0b011 //clock derivado do oscilador RC, para até 1,00MHz
+#define ADC_FOSC_32 0b010 //clock para FOSC até 40,00MHz
+#define ADC_FOSC_8 0b001 //clock para FOSC até 10,00MHz
+#define ADC_FOSC_2 0b000 //clock para FOSC até 2,50MHz
+#define ADC_INT_ON 0b1 //habilita a interrupção do conversor A/D
+#define ADC_INT_OFF 0b0 //desabilita a interrupção conversor A/D
+
+//Declaração de protótipos de função
+void habilita_ADC(void); //1. 6 - Habilita o módulo AD (ADCON0bits.ADON = 1)
+
+void configuracao_ADC(unsigned char Vref_n, 
+                      unsigned char Vref_p, 
+                      unsigned char configuracao_pinos_AN,          
+                      unsigned char justificacao, 
+                      unsigned char tempo_aquisicao, 
+                      unsigned char clock_conversao,
+                      unsigned char interrupcao_AD); /*
+ * 1 - Configuração do módulo A/D:
+ * 1.1 - Configura a tensão de referência, os pinos analógicos e as I/O digitais (ADCON1):
+ * - Vref_n: tensao_AN2(VCFG1 = 1) ou tensao_Vss(VCFG1 = 0)
+ * - Vref_p: tensao_AN3(VCFG0 = 1) ou tensao_Vdd(VCFG1 = 0)
+ * - configuracao_pinos_AN:
+ *  ADC_13AN = 0000: todo o canal analógico é configurado como entrada
+ *  ADC_13AN = 0001: todo o canal analógico é configurado como entrada
+ *  ADC_13AN = 0010: todo o canal analógico é configurado como entrada
+ *  ADC_12AN = 0011: de AN0 até AN11 é configurado como entrada analógica
+ *  ADC_11AN = 0100: de AN0 até AN10 é configurado como entrada analógica
+ *  ADC_10AN = 0101: de AN0 até AN09 é configurado como entrada analógica
+ *  ADC_9AN = 0110: de AN0 até AN08 é configurado como entrada analógica
+ *  ADC_8AN = 0111: de AN0 até AN07 é configurado como entrada analógica
+ *  ADC_7AN = 1000: de AN0 até AN06 é configurado como entrada analógica
+ *  ADC_6AN = 1001: de AN0 até AN05 é configurado como entrada analógica
+ *  ADC_5AN = 1010: de AN0 até AN04 é configurado como entrada analógica
+ *  ADC_4AN = 1011: de AN0 até AN03 é configurado como entrada analógica
+ *  ADC_3AN = 1100: de AN0 até AN02 é configurado como entrada analógica
+ *  ADC_2AN = 1101: de AN0 até AN01 é configurado como entrada analógica
+ *  ADC_1AN = 1110: AN0 é configurado como entrada analógica
+ *  ADC_0AN = 1111: todo o canal analógico é configurado como I/0 digital
+ * 
+ * 1.3 - Selecionar a justificação do resultado da conversão (ADCON2bits.ADFM):
+ *  ADC_RIGTH_JUST = 1X: resultado justificado a direita
+ *  ADC_LEFT_JUST = 0X: resultado justificado a esquerda
+ * 
+ * 1.4 - Selecionar o tempo de aquisição (ADCON2bits.ACQT):
+ *  Para tempo de aquisição manual: consultar seção 21.1 do datasheet;
+ *  Para tempo de aquisição automático: Taq = Tad / Tciclo = 3,2u / Tciclo, Tciclo = 4 / FOSC;  
+ *  ADC_20_Tad = 111: tempo de aquisição de 20 * Tad 
+ *  ADC_16_Tad = 110: tempo de aquisição de 16 * Tad
+ *  ADC_12_Tad = 101: tempo de aquisição de 12 * Tad
+ *  ADC_08_Tad = 100: tempo de aquisição de 08 * Tad
+ *  ADC_6_Tad = 011: tempo de aquisição de 06 * Tad
+ *  ADC_4_Tad = 010: tempo de aquisição de 04 * Tad
+ *  ADC_2_Tad = 001: tempo de aquisição de 02 * Tad
+ *  ADC_0_Tad = 000: tempo de aquisição manual, para FRC, osciador interno
+ * 
+ * 1.5 - Seleciionar o clock de conversão (ADCON2bits.ADCS), que depende da FOSCmax:
+ *  ADC_FOSC_FRC = 111: clock derivado do oscilador RC, para até 1,00MHz
+ *  ADC_FOSC_64 = 110: clock para FOSC até 48,00MHz
+ *  ADC_FOSC_16 = 101: clock para FOSC até 20,00MHz
+ *  ADC_FOSC_4 = 100: clock para FOSC até 5,00MHz
+ *  ADC_FOSC_FRC = 011: clock derivado do oscilador RC, para até 1,00MHz
+ *  ADC_FOSC_32 = 010: clock para FOSC até 40,00MHz
+ *  ADC_FOSC_8 = 001: clock para FOSC até 10,00MHz
+ *  ADC_FOSC_2 = 000: clock para FOSC até 2,50MHz
+ * 
+ * 2 - Configurar a interrupção:
+ * 2.2 - Habilita ou desabilita a interrupção do conversor A/D:
+ *  ADC_INT_ON = 1: habilita a interrupção do conversor A/D
+ *  ADC_INT_OFF = 0: desabilita a interrupção conversor A/D
+ */
+
+void seleciona_ADC(unsigned char canal); /*
+ * 1.2 - Seleciona o canal analógico de entrada (ADCON0):
+ *  ADC_CH0 = 0000: Seleciona o canal analógico 0
+ *  ADC_CH1 = 0001: Seleciona o canal analógico 1
+ *  ADC_CH2 = 0010: Seleciona o canal analógico 2
+ *  ADC_CH3 = 0011: Seleciona o canal analógico 3
+ *  ADC_CH4 = 0100: Seleciona o canal analógico 4
+ *  ADC_CH5 = 0101: Seleciona o canal analógico 5
+ *  ADC_CH6 = 0110: Seleciona o canal analógico 6
+ *  ADC_CH7 = 0111: Seleciona o canal analógico 7
+ *  ADC_CH8 = 1000: Seleciona o canal analógico 8
+ *  ADC_CH9 = 1001: Seleciona o canal analógico 9
+ *  ADC_CH10 = 1010: Seleciona o canal analógico 10
+ *  ADC_CH11 = 1011: Seleciona o canal analógico 11
+ *  ADC_CH12 = 1100: Canal analógico 12
+ */  
+
+unsigned int conversao_ADC(void); //4 - Inicia uma conversão:
+
+unsigned int conversao_rapida_ADC(void); //4 - Inicia uma conversão:
+
+unsigned char status_conversao_ADC(void); //x.x - Verifica o status da conversão
+
+void desabilita_ADC(void); //x. x - Desabilita o módulo A/D(ADCON0bits.ADON = 0) e a interrupção do módulo A/D(PIE1bits.ADIE = 0)
+
+#endif	/* ADC_H */
+
